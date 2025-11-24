@@ -2,7 +2,7 @@ import streamlit as st
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
 
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpointEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -50,9 +50,13 @@ def build_vectorstore(transcript_text: str):
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.create_documents([transcript_text])
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    # embeddings = HuggingFaceEmbeddings(
+    #     model_name="sentence-transformers/all-MiniLM-L6-v2"
+    # )
+    embeddings = HuggingFaceEndpointEmbeddings(
+        repo_id="sentence-transformers/all-MiniLM-L6-v2", task="feature-extraction"
     )
+
     vector_store = FAISS.from_documents(chunks, embeddings)
 
     return vector_store
@@ -68,7 +72,7 @@ def build_rag_chain(vector_store):
         template="""
             You are a helpful assistant.
             Answer ONLY using the provided transcript context but do not mention transcript, mention video instead keeping abstraction. But you can go out of the video ONLY if needs to explain anything from within the video.
-            If the context is insufficient, apologize nicely witht the reason
+            If the context is insufficient, apologize nicely with the reason.
 
             Context:
             {context}
