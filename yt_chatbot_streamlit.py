@@ -131,9 +131,9 @@ st.set_page_config(
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = st.get_option("theme.base") == "dark"
 
-_, theme_col = st.columns([0.84, 0.16])
+_, theme_col = st.columns([0.8, 0.2])
 with theme_col:
-    st.toggle("🌙 Dark", key="dark_mode")
+    st.toggle("Dark mode", key="dark_mode")
 
 
 # =============================================
@@ -143,37 +143,63 @@ with theme_col:
 if st.session_state.dark_mode:
     theme_vars = """
     :root {
-        --bg-main: #0b1220;
-        --bg-card: rgba(15, 23, 42, 0.82);
-        --text-main: #e5edf7;
-        --text-muted: #98a9c2;
-        --border-soft: rgba(148, 163, 184, 0.22);
-        --brand: #60a5fa;
-        --brand-dark: #3b82f6;
-        --ring: rgba(96, 165, 250, 0.28);
-        --answer-bg: rgba(30, 41, 59, 0.9);
-        --chip-bg: rgba(37, 99, 235, 0.16);
-        --chip-text: #bfdbfe;
-        --chip-border: rgba(96, 165, 250, 0.45);
-        --card-shadow: 0 20px 34px rgba(2, 6, 23, 0.35);
+        --bg-main: #0a1020;
+        --bg-card: rgba(17, 26, 47, 0.84);
+        --text-main: #e6edf8;
+        --text-muted: #9fb1cc;
+        --border-soft: rgba(148, 163, 184, 0.28);
+
+        --brand: #7ab2ff;
+        --brand-dark: #5b8dff;
+        --ring: rgba(122, 178, 255, 0.34);
+        --button-shadow: rgba(59, 130, 246, 0.32);
+
+        --input-bg: rgba(11, 17, 31, 0.76);
+        --input-placeholder: #8194b3;
+        --answer-bg: rgba(10, 18, 34, 0.82);
+
+        --chip-bg: rgba(59, 130, 246, 0.2);
+        --chip-text: #cce1ff;
+        --chip-border: rgba(96, 165, 250, 0.46);
+
+        --hero-grad-1: rgba(59, 130, 246, 0.3);
+        --hero-grad-2: rgba(56, 189, 248, 0.14);
+        --glow-a: rgba(59, 130, 246, 0.24);
+        --glow-b: rgba(14, 165, 233, 0.2);
+
+        --alert-bg: rgba(15, 23, 42, 0.66);
+        --card-shadow: 0 24px 42px rgba(2, 6, 23, 0.52);
     }
     """
 else:
     theme_vars = """
     :root {
-        --bg-main: #f4f7ff;
-        --bg-card: rgba(255, 255, 255, 0.88);
+        --bg-main: #f3f7ff;
+        --bg-card: rgba(255, 255, 255, 0.9);
         --text-main: #0f172a;
-        --text-muted: #475569;
-        --border-soft: #dbe5f1;
-        --brand: #2563eb;
-        --brand-dark: #1d4ed8;
-        --ring: rgba(37, 99, 235, 0.18);
+        --text-muted: #4b5f7a;
+        --border-soft: #d8e2f2;
+
+        --brand: #2f6cf6;
+        --brand-dark: #2453ca;
+        --ring: rgba(47, 108, 246, 0.2);
+        --button-shadow: rgba(47, 108, 246, 0.28);
+
+        --input-bg: rgba(255, 255, 255, 0.96);
+        --input-placeholder: #8a98af;
         --answer-bg: #f8fbff;
+
         --chip-bg: #e9f1ff;
-        --chip-text: #1e3a8a;
-        --chip-border: #bdd6ff;
-        --card-shadow: 0 18px 34px rgba(15, 23, 42, 0.08);
+        --chip-text: #234484;
+        --chip-border: #bfd5fb;
+
+        --hero-grad-1: rgba(37, 99, 235, 0.18);
+        --hero-grad-2: rgba(14, 165, 233, 0.1);
+        --glow-a: rgba(37, 99, 235, 0.17);
+        --glow-b: rgba(14, 165, 233, 0.15);
+
+        --alert-bg: #f9fbff;
+        --card-shadow: 0 20px 34px rgba(15, 23, 42, 0.1);
     }
     """
 
@@ -188,8 +214,8 @@ body {
 
 .stApp {
     background:
-        radial-gradient(circle at 6% 2%, rgba(59, 130, 246, 0.17), transparent 26%),
-        radial-gradient(circle at 94% 4%, rgba(14, 165, 233, 0.17), transparent 30%),
+    radial-gradient(circle at 6% 2%, var(--glow-a), transparent 28%),
+    radial-gradient(circle at 94% 4%, var(--glow-b), transparent 32%),
         var(--bg-main);
 }
 
@@ -210,7 +236,9 @@ p, label {
 }
 
 .header-shell {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(14, 165, 233, 0.08));
+    background:
+        linear-gradient(135deg, var(--hero-grad-1), var(--hero-grad-2)),
+        var(--bg-card);
     border: 1px solid var(--border-soft);
     border-radius: 20px;
     padding: 24px 18px;
@@ -262,7 +290,7 @@ p, label {
 }
 
 .stTextInput input {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: var(--input-bg);
     color: var(--text-main);
     border-radius: 12px;
     padding: 12px 14px;
@@ -280,6 +308,16 @@ p, label {
     background: transparent !important;
 }
 
+[data-baseweb="base-input"] {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 12px !important;
+}
+
+.stTextInput input::placeholder {
+    color: var(--input-placeholder);
+}
+
 .stButton > button {
     width: 100%;
     background: linear-gradient(118deg, var(--brand), var(--brand-dark));
@@ -290,13 +328,13 @@ p, label {
     font-weight: 700;
     font-size: 0.92rem;
     transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease;
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.26);
+    box-shadow: 0 10px 20px var(--button-shadow);
 }
 
 .stButton > button:hover {
     transform: translateY(-1px);
     filter: brightness(1.03);
-    box-shadow: 0 13px 24px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 13px 24px var(--button-shadow);
 }
 
 .stButton > button:active {
@@ -314,8 +352,14 @@ p, label {
 }
 
 .stAlert {
+    background: var(--alert-bg) !important;
     border-radius: 12px !important;
     border: 1px solid var(--border-soft) !important;
+}
+
+[data-testid="stToggle"] label p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 .footer {
