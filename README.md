@@ -4,7 +4,8 @@ Ask questions about any YouTube video and get answers grounded in its transcript
 
 ## Live Demo
 
-https://youtube-video-query-solver-jyshbtm52x298tjgarzx2u.streamlit.app/
+[https://youtube-video-query-solver-jyshbtm52x298tjgarzx2u.streamlit.app/
+](https://youtube-video-query-solver-jyshbtm52x298tjgarzx2u.streamlit.app/)
 
 ## Features
 
